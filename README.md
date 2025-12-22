@@ -1,10 +1,10 @@
 ## Debt & Savings Web App
-#### A modern financial tracking web application built with Next.js 16.0.8, Prisma ORM, and PostgreSQL. This app helps users manage debts, savings goals, transactions, and provides clean, real-time dashboards.
+#### A modern financial tracking web application built with Next.js 16.1.0, Prisma ORM, and PostgreSQL. This app helps users manage debts, savings goals, transactions, and provides clean, real-time dashboards.
 
 ## Tech Stack
 | Layer      | Technology                                                   |
 | ---------- | ------------------------------------------------------------ |
-| Frontend   | Next.js 16.0.10 (App Router)                                 |
+| Frontend   | Next.js 16.1.0 (App Router)                                 |
 | Backend    | Next.js API routes                                           |
 | ORM        | Prisma                                                       |
 | Database   | PostgreSQL                                                   |
@@ -24,7 +24,7 @@
 ## Installation & Setup
 #### 1. Clone the repository
 ```bash
-git clone https://github.com/your/repo.git &&
+git clone https://github.com/anupong-pakee-dev/debt-savings-web-app &&
 cd debt-savings-app
 ```
 
