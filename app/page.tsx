@@ -1,3 +1,20 @@
+import { Metadata } from "next" 
+
+export const metadata: Metadata = {
+  title: "Debt & Savings | วางแผนการเงิน ปลดหนี้อย่างเป็นระบบ",
+  description: "แพลตฟอร์มจัดการหนี้และเงินออม วิเคราะห์รายรับรายจ่ายด้วยกราฟ ช่วยให้ตัดสินใจทางการเงินได้ดีขึ้น",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "Debt & Savings",
+    description: "จัดการหนี้และเงินออมด้วยระบบวิเคราะห์การเงินที่เข้าใจง่าย",
+    url: "http://localhost:3000",
+    siteName: "Debt & Savings",
+    type: "website"
+  }
+}
+
 export default function page() {
 
   return (
