@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { Button } from "./components/Components";
+import ExampleChart from "./components/ExampleChart";
 
 export const metadata: Metadata = {
   title: "Debt & Savings | วางแผนการเงิน ปลดหนี้อย่างเป็นระบบ",
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
 export default function page() {
   return (
     <main className="min-h-screen bg-linear-to-br from-emerald-500 to-teal-600 text-emerald-50">
-      <header className="p-10 text-center">
+      <header className="p-10 md:p-20 text-center">
         <div>
           <h1 className="text-2xl font-bold">ลดหนี้ เพิ่มเงินออม</h1>
           <p>เริ่มวันนี้ด้วยแผนง่ายๆ</p>
@@ -43,15 +44,15 @@ export default function page() {
         </article>
       </section>
 
-      <section>
-        <h2>ตัวอย่างกราฟการเงิน</h2>
+      <section className="justify-items-center p-10">
+        <h2 className="font-bold mb-6">ตัวอย่างกราฟการเงิน</h2>
 
         <figure>
-          <canvas></canvas>
-          <figcaption>กราฟเปรียบเทียบรายรับและรายจ่ายในแต่ละเดือน</figcaption>
+          <ExampleChart />
+          <figcaption className="mt-4 text-center">กราฟเปรียบเทียบรายรับและรายจ่ายในแต่ละเดือน</figcaption>
         </figure>
 
-        <p>
+        <p className="sr-only">
           เดือนมกราคมถึงมิถุนายน รายรับสูงกว่ารายจ่ายโดยเฉลี่ย 20%
           ค่าใช้จ่ายสูดสุดอยู่ในเดือนมีนาคม
         </p>
