@@ -49,7 +49,9 @@ export default function page() {
 
         <figure>
           <ExampleChart />
-          <figcaption className="mt-4 text-center">กราฟเปรียบเทียบรายรับและรายจ่ายในแต่ละเดือน</figcaption>
+          <figcaption className="mt-4 text-center">
+            กราฟเปรียบเทียบรายรับและรายจ่ายในแต่ละเดือน
+          </figcaption>
         </figure>
 
         <p className="sr-only">
@@ -58,25 +60,25 @@ export default function page() {
         </p>
       </section>
 
-      <section>
-        <h2>ติดต่อฉัน</h2>
+      <section className="p-10 text-center">
+        <h2 className="mb-4 font-bold">ติดต่อฉัน</h2>
 
-        <form>
-          <label>
-            อีเมล
-            <input type="email" />
-          </label>
-          <label>
-            ข้อมูล
-            <input type="text" />
-          </label>
-          <button type="submit">ส่งข้อความ</button>
+        <form className="inline-block p-6 border rounded-2xl">
+          <div>
+            <label className="mr-2">อีเมล:</label>
+            <input type="email" className="border-b outline-none" />
+          </div>
+          <div className="flex mt-4 items-start">
+            <label className="mr-2">ข้อความ:</label>
+            <textarea className="border rounded-2xl p-2 outline-none" />
+          </div>
+          <Button className="mt-4" type="submit">ส่งข้อความ</Button>
         </form>
 
         <address>Email: mrnu.developer@gmail.com</address>
       </section>
 
-      <footer>
+      <footer className="p-4 text-center bg-black/60">
         <p>&copy; 2025 Debt & Savings. All rights reserved.</p>
       </footer>
     </main>
