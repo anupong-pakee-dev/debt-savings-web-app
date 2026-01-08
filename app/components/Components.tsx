@@ -20,9 +20,9 @@ export const Button = ({ children, className = "", ...props}) => {
     )
 }
 
-export const Input = ({...props}) => {
+export const Input = ({className = "", ...props}) => {
     return (
-        <input {...props} className="w-full px-2 py-2 text-sm outline-none" />
+        <input {...props} className={`w-full px-2 py-2 text-sm outline-none ${className}`} />
     )
 }
 
