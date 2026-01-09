@@ -13,7 +13,7 @@ export default function FormSignIn() {
                 <label className="text-sm w-18 md:w-16">รหัสผ่าน: </label>
                 <Input type="password" name="password" className="pl-2" placeholder="กรอกรหัสผ่านของคุณ" />
             </div>
-            <Button type="submit" className="cursor-pointer">เข้าสู่ระบบ</Button>
+            <Button type="submit" className="cursor-pointer text-black">เข้าสู่ระบบ</Button>
         </form>
     )
 }

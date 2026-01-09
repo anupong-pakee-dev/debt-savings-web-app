@@ -9,7 +9,7 @@ export default function FormSignUp() {
             <label className='text-sm w-18 md:w-16'>อีเมล์: </label>
             <Input type="email" name="email" className="pl-2" placeholder="example@example.com" />
         </div>
-        <Button type="submit" className='cursor-pointer'>สมัครใช้งาน</Button>
+        <Button type="submit" className='cursor-pointer text-black'>สมัครใช้งาน</Button>
     </form>
   )
 }
