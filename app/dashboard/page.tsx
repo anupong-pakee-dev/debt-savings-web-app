@@ -3,7 +3,35 @@
 import { motion } from "framer-motion";
 import { Card, CardContent } from "../components/Components";
 import { ArrowDownRight, ArrowUpRight, CreditCard, Wallet } from "lucide-react";
+import { Chart } from "../components/Chart";
 export default function page() {
+    const labels = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.']
+    const dataMocup = {
+        labels,
+        datasets: [
+            {
+                label: "เงินออม",
+                data: [12000, 18000, 22000, 40000, 45000, 52000],
+                borderColor: "rgba(34, 197, 94, 1)",
+                backgroundColor: "rgba(34, 197, 94, 1)",
+                borderWidth: 2,
+                tension: 0.4,
+                pointRadius: 0,
+                fill: true,
+            },
+            {
+                label: "รายจ่าย",
+                data: [1200000, 180000, 140000, 90000, 50000, 30000],
+                borderColor: "rgba(239, 68, 68, 1)",
+                backgroundColor: "rgba(239, 68, 68, 1)",
+                borderWidth: 2,
+                tension: 0.4,
+                pointRadius: 0,
+                fill: true,
+            }
+        ]
+
+    }
     return (
         <div className="min-h-screen p-6 md:p-20">
             <motion.div
@@ -31,7 +59,7 @@ export default function page() {
 
                 <Card className="bg-white border shadow-xl">
                     <CardContent>
-                       <div className="flex items-center justify-between text-green-600">
+                        <div className="flex items-center justify-between text-green-600">
                             <CreditCard className="w-6 h-6" />
                             <span>
                                 <ArrowDownRight className="mr-1 w-4 h-4" /> -0.001%
@@ -54,6 +82,14 @@ export default function page() {
                         <p className="text-2xl">12,000 บาท</p>
                     </CardContent>
                 </Card>
+            </div>
+
+            <div className="justify-items-center p-10">
+                <figure>
+                    <Chart title="เงินออม VS หนี้สิน" desc="ข้อมูลปัจจุบัน" dataset={dataMocup} />
+                </figure>
+                <div>
+                </div>
             </div>
         </div>
     )
