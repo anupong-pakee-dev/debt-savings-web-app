@@ -1,9 +1,10 @@
 'use client'
 
 import { motion } from "framer-motion";
-import { Card, CardContent } from "../components/Components";
-import { ArrowDownRight, ArrowUpRight, CreditCard, Wallet } from "lucide-react";
+import { Button, Card, CardContent } from "../components/Components";
+import { ArrowDownRight, ArrowUpRight, CreditCard, Plus, Wallet } from "lucide-react";
 import { Chart } from "../components/Chart";
+import AddTransaction from "../components/AddTransaction.tsx";
 export default function page() {
     const labels = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.']
     const dataMocup = {
@@ -14,7 +15,7 @@ export default function page() {
                 data: [12000, 18000, 22000, 40000, 45000, 52000],
                 borderColor: "rgba(34, 197, 94, 1)",
                 backgroundColor: "rgba(34, 197, 94, 1)",
-                borderWidth: 2,
+                borderWidth: 1,
                 tension: 0.4,
                 pointRadius: 0,
                 fill: true,
@@ -24,7 +25,7 @@ export default function page() {
                 data: [1200000, 180000, 140000, 90000, 50000, 30000],
                 borderColor: "rgba(239, 68, 68, 1)",
                 backgroundColor: "rgba(239, 68, 68, 1)",
-                borderWidth: 2,
+                borderWidth: 1,
                 tension: 0.4,
                 pointRadius: 0,
                 fill: true,
@@ -32,18 +33,46 @@ export default function page() {
         ]
 
     }
+
+    const options = {
+        responsive: true,
+        plugins: {
+            legend: {
+                labels: { color: 'white' },
+            }
+        },
+        scales: {
+            x: {
+                ticks: { color: 'white' },
+                grid: { color: 'rgba(255, 255, 255, 0.2)' }
+            },
+            y: {
+                ticks: { color: 'white' },
+                grid: { color: 'rgba(255, 255, 255, 0.2)' }
+            }
+        }
+    }
     return (
-        <div className="min-h-screen p-6 md:p-20">
+        <div className="min-h-screen">
             <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mb-8">
-
-                <h1 className="text-2xl font-semibold">แดชบอร์ด</h1>
-                <p>หน้าแดชบอร์ดของคุณ</p>
+                className="flex justify-between mb-8 p-8">
+                <div>
+                    <h1 className="text-2xl font-semibold">แดชบอร์ด</h1>
+                    <p>หน้าแดชบอร์ดของคุณ</p>
+                </div>
+                <Button className="flex items-center text-black cursor-pointer"><Plus /> เพิ่มรายการ</Button>
             </motion.div>
 
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-3 mb-10 text-black">
+            <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="min-h-screen p-8">
+                <AddTransaction />
+            </motion.div>
+
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3 mb-10 p-8 text-black">
                 <Card className="bg-white border shadow-xl">
                     <CardContent>
                         <div className="flex items-center justify-between text-green-600">
@@ -86,11 +115,13 @@ export default function page() {
 
             <div className="justify-items-center p-10">
                 <figure>
-                    <Chart title="เงินออม VS หนี้สิน" desc="ข้อมูลปัจจุบัน" dataset={dataMocup} />
+                    <Chart title="เงินออม VS หนี้สิน" desc="ข้อมูลปัจจุบัน" dataset={dataMocup} optionsdata={options} />
                 </figure>
-                <div>
-                </div>
             </div>
+
+            <footer className="p-4 text-center bg-black/60">
+                <p>&copy; 2026 Debt & Savings. All rights reserved.</p>
+            </footer>
         </div>
     )
 }

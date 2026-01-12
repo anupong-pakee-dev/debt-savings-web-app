@@ -15,7 +15,8 @@ const savingsVSdebtData = {
       label: "รายรับ",
       data: [20000, 25000, 22000, 27000, 30000, 32000],
       borderColor: "rgba(34, 197, 94, 1)",
-      borderWidth: 2,
+      backgroundColor: "rgba(34, 197, 94, 1)",
+      borderWidth: 1,
       tension: 0.4,
       pointRadius: 0,
       fill: true,
@@ -24,12 +25,32 @@ const savingsVSdebtData = {
       label: "รายจ่าย",
       data: [30000, 28000, 26000, 20000, 11000, 9000],
       borderColor: "rgba(239, 68, 68, 1)",
-      borderWidth: 2,
+      backgroundColor: "rgba(239, 68, 68, 1)",
+      borderWidth: 1,
       tension: 0.4,
       pointRadius: 0,
       fill: true,
     }
   ]
+}
+
+const options = {
+  responsive: true,
+  plugins: {
+    legend: {
+      labels: { color: 'white' },
+    }
+  },
+  scales: {
+    x: {
+      ticks: { color: 'white' },
+      grid: { color: 'rgba(255, 255, 255, 0.2)' }
+    },
+    y: {
+      ticks: { color: 'white' },
+      grid: { color: 'rgba(255, 255, 255, 0.2)' }
+    }
+  }
 }
 
 export default function Home() {
@@ -60,7 +81,7 @@ export default function Home() {
         <h2 className="font-bold mb-6">ตัวอย่างกราฟการเงิน</h2>
 
         <figure>
-          <Chart title="รายรับ VS รายจ่าย" desc="ข้อมูลเมื่อ 6 เดือนที่ผ่านมา" dataset={savingsVSdebtData} />
+          <Chart title="รายรับ VS รายจ่าย" desc="ข้อมูลเมื่อ 6 เดือนที่ผ่านมา" dataset={savingsVSdebtData} optionsdata={options} />
           <figcaption className="mt-4 text-center">
             กราฟเปรียบเทียบรายรับและรายจ่ายในช่วง 6 เดือนที่ผ่านมา
           </figcaption>

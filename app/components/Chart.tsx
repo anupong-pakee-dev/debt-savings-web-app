@@ -21,16 +21,16 @@ ChartJS.register(
   Legend
 );
 
-
-
 export function Chart({
   title,
   desc,
   dataset,
+  optionsdata,
 }: {
   title: string;
   desc: string;
   dataset: object;
+  optionsdata: object;
 }) {
   return (
     <Card className="relative bg-transparent! rounded-3xl overflow-hidden border shadow-xl">
@@ -43,7 +43,7 @@ export function Chart({
         </div>
 
         <div className="w-60 h-100 md:w-150 xl:w-200">
-          <Line data={dataset} />
+          <Line data={dataset} options={optionsdata} />
         </div>
       </CardContent>
     </Card>
