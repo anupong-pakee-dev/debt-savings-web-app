@@ -1,18 +1,23 @@
 "use client";
 
+import React from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, Plus } from "lucide-react";
 import { Button, Card, CardContent, Input, Select } from "./Components";
 
-export default function AddTransaction() {
+export default function AddTransaction({showOption,} : {showOption: boolean}) {
+    const [showOptionState, setShowOptionState] = React.useState(showOption);
     return (
-        <div>
-            <motion.div>
+        <div className={`${showOption ? 'block' : 'hidden'} p-8`}>
+            <Button className="flex py-4 text-black cursor-pointer" onClick={() => {setShowOptionState(false); window.location.reload()}}>
                 <ArrowLeft />
-                <h1>Add Transaction</h1>
-            </motion.div>
+                <h1>เพิ่มรายการ</h1>
+            </Button>
 
-            <motion.div>
+            <motion.div 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-6 text-black">
                 <Card>
                     <CardContent>
                         <form>

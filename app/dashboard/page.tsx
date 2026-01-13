@@ -1,11 +1,13 @@
 'use client'
 
+import React from "react";
 import { motion } from "framer-motion";
 import { Button, Card, CardContent } from "../components/Components";
 import { ArrowDownRight, ArrowUpRight, CreditCard, Plus, Wallet } from "lucide-react";
 import { Chart } from "../components/Chart";
 import AddTransaction from "../components/AddTransaction.tsx";
 export default function page() {
+    const [show, setShow] = React.useState(false);
     const labels = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.']
     const dataMocup = {
         labels,
@@ -57,20 +59,15 @@ export default function page() {
             <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="flex justify-between mb-8 p-8">
+                className="flex justify-between p-8">
                 <div>
                     <h1 className="text-2xl font-semibold">แดชบอร์ด</h1>
                     <p>หน้าแดชบอร์ดของคุณ</p>
                 </div>
-                <Button className="flex items-center text-black cursor-pointer"><Plus /> เพิ่มรายการ</Button>
+                <Button className={`${show ? 'hidden' : 'block'} flex items-center text-black cursor-pointer`} onClick={() => setShow(!show)}><Plus /> เพิ่มรายการ</Button>
             </motion.div>
 
-            <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="min-h-screen p-8">
-                <AddTransaction />
-            </motion.div>
+            <AddTransaction showOption={show} />
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-3 mb-10 p-8 text-black">
                 <Card className="bg-white border shadow-xl">
