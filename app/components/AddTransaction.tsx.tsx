@@ -21,43 +21,43 @@ export default function AddTransaction({showOption,} : {showOption: boolean}) {
                 <Card>
                     <CardContent>
                         <form>
-                            <div>
-                                <label>Transaction Type</label>
+                            <div className="mb-4">
+                                <label className="font-semibold">ประเภท</label>
                                 <Select>
-                                    <option value="income">Income (Savings)</option>
-                                    <option value="expense">Expense (Debt)</option>
+                                    <option value="income">รายรับ (เงินออม)</option>
+                                    <option value="expense">รายจ่าย (หนี้)</option>
                                 </Select>
                             </div>
 
-                            <div>
-                                <label>Amount (THB)</label>
-                                <Input />
+                            <div className="mb-4">
+                                <label className="font-semibold">จำนวนเงิน (บาท)</label>
+                                <Input type="number" placeholder="0.01" className="pl-4 border rounded-xl" />
                             </div>
 
-                            <div>
-                                <label>Category</label>
+                            <div className="mb-4">
+                                <label className="font-semibold">หมวดหมู่</label>
                                 <Select>
-                                    <option value="salary">Salary</option>
-                                    <option value="food">Food</option>
-                                    <option value="rent">Rent</option>
-                                    <option value="credit">Credit Card</option>
-                                    <option value="other">Other</option>
+                                    <option value="salary">เงินเดือน</option>
+                                    <option value="food">อาหาร</option>
+                                    <option value="rent">ค่าเช่า</option>
+                                    <option value="credit">บัตรเครดิต</option>
+                                    <option value="other">อื่นๆ</option>
                                 </Select>
                             </div>
 
-                            <div>
-                                <label>Date</label>
-                                <Input />
+                            <div className="mb-4">
+                                <label className="font-semibold">วันที่</label>
+                                <Input type="date" className="pl-4 border rounded-xl" defaultValue={new Date().toISOString().split('T')[0]} />
+                            </div>
+
+                            <div className="mb-4">
+                                <label className="font-semibold">หมายเหตุ (ไม่บังคับ)</label>
+                                <Input type="text" placeholder="เพิ่มหมายเหตุ" className="pl-4 border rounded-xl" />
                             </div>
 
                             <div>
-                                <label>Note (optional)</label>
-                                <Input />
-                            </div>
-
-                            <div>
-                                <Button>Cancel</Button>
-                                <Button>Add Transaction</Button>
+                                <Button type="reset" className="mr-4">เคลียร์</Button>
+                                <Button type="submit">เพิ่มรายการ</Button>
                             </div>
                         </form>
                     </CardContent>
