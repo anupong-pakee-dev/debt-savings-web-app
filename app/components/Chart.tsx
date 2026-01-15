@@ -10,6 +10,8 @@ import {
   LineElement,
   Tooltip,
   Legend,
+  ChartData,
+  ChartOptions,
 } from "chart.js";
 
 ChartJS.register(
@@ -21,6 +23,9 @@ ChartJS.register(
   Legend
 );
 
+type LineChartData = ChartData<"line">;
+type LineChartOptions = ChartOptions<"line">;
+
 export function Chart({
   title,
   desc,
@@ -29,8 +34,8 @@ export function Chart({
 }: {
   title: string;
   desc: string;
-  dataset: object;
-  optionsdata: object;
+  dataset: LineChartData;
+  optionsdata: LineChartOptions;
 }) {
   return (
     <Card className="relative bg-transparent! rounded-3xl overflow-hidden border shadow-xl">

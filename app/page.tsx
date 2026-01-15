@@ -1,5 +1,7 @@
+import Link from "next/link";
 import { Chart } from "./components/Chart";
 import { Button, Input } from "./components/Components";
+import Warn from "./components/Warn";
 
 const savingsVSdebtData = {
   labels: [
@@ -59,7 +61,9 @@ export default function Home() {
       <header className="p-10 md:p-20 text-center">
         <h1 className="text-2xl font-bold">ลดหนี้ เพิ่มเงินออม</h1>
         <p>เริ่มต้นวันนี้ด้วยแผนง่ายๆ</p>
-        <Button className="mt-4 text-black">เริ่มเลย</Button>
+        <Link href={"/auth/signin"}>
+          <Button className="mt-4 text-black">เริ่มเลย</Button>
+        </Link>
       </header>
 
       <section className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center p-10 shadow-xl">
@@ -92,7 +96,7 @@ export default function Home() {
 
       <section className="p-10 text-center">
         <h2 className="mb-4 font-bold">ติดต่อฉัน</h2>
-        <form className="inline-block p-6 border rounded-2xl">
+        <form action="mailto:mrnu.developer@gmail.com" className="inline-block p-6 border rounded-2xl">
           <div className="flex items-center">
             <label className="mr-2">อีเมล์: </label>
             <Input type="email" className="border-b" placeholder="กรอกอีเมล์ของคุณ" />
@@ -106,6 +110,8 @@ export default function Home() {
 
         <address>Gmail: mrnu.developer@gmail.com</address>
       </section>
+
+      <Warn />
 
       <footer className="p-4 text-center bg-black/60">
         <p>&copy; 2026 Debt & Savings. All rights reserved.</p>

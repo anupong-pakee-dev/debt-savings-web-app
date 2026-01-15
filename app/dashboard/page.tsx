@@ -64,7 +64,7 @@ export default function page() {
                     <h1 className="text-2xl font-semibold">แดชบอร์ด</h1>
                     <p>หน้าแดชบอร์ดของคุณ</p>
                 </div>
-                <Button className={`${show ? 'hidden' : 'block'} flex items-center text-black cursor-pointer`} onClick={() => setShow(!show)}><Plus /> เพิ่มรายการ</Button>
+                <Button className={`${show ? 'hidden' : 'block'} flex items-center text-black cursor-pointer`} disabled onClick={() => setShow(!show)}><Plus /> เพิ่มรายการ</Button>
             </motion.div>
 
             <AddTransaction showOption={show} />
