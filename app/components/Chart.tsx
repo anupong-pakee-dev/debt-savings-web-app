@@ -47,7 +47,7 @@ export function Chart({
           <span className="text-sm text-white/70">{desc}</span>
         </div>
 
-        <div className="w-60 h-100 md:w-150 xl:w-200">
+        <div className="w-70 md:w-150 xl:w-350">
           <Line data={dataset} options={optionsdata} />
         </div>
       </CardContent>

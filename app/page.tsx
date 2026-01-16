@@ -94,7 +94,7 @@ export default function Home() {
         <p className="sr-only">เดือนมกราคมถึงมิถุนายน รายรับสูงสุดในเดือนมิถุนายน คือ 32,000 บาท</p>
       </section>
 
-      <section className="p-10 text-center">
+      <section className="p-4 md:p-10 text-center">
         <h2 className="mb-4 font-bold">ติดต่อฉัน</h2>
         <form action="mailto:mrnu.developer@gmail.com" className="inline-block p-6 border rounded-2xl">
           <div className="flex items-center">

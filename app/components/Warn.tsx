@@ -7,7 +7,7 @@ export default function Warn() {
   const [active, setActive] = React.useState(true);
   return (
     <div className={`${active ? 'block' : 'hidden'} fixed top-0 left-0 w-full min-h-screen content-center justify-items-center backdrop-blur-xl cursor-pointer`}>
-      <div className='p-6 border rounded-2xl'>
+      <div className='w-[80%] p-6 border rounded-2xl'>
         <div className='flex justify-between'>
           <h1 className='text-2xl font-semibold'>แจ้งเตือน</h1>
           <span>15-01-2569</span>
