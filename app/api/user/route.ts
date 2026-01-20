@@ -1,19 +1,19 @@
-import { prisma } from "@/app/lib/prisma"
-import { NextResponse } from "next/server"
+import { z } from "zod";
+import { prisma } from "@/app/lib/prisma";
+import { NextResponse } from "next/server";
 
-export async function GET() {
-    const users = await prisma.user.findMany()
-    return NextResponse.json(users)
-}
+const emailSchema = z.object({
+    email: z.email()
+})
 
-export async function POST(req: Request) {
-    const body = await req.json()
-    const user = await prisma.user.create({
-        data: {
-            name: body.name,
-            email: body.email, 
-            password: body.password
-        },
+export const POST = async (req: Request) => {
+    const body = await req.json();
+
+    const parsed = emailSchema.safeParse(body);
+    if (!parsed.success) return NextResponse.json({ error: parsed.error.flatten(), status: 400 });
+
+    await prisma.user.create({
+        data: parsed.data
     })
-    return NextResponse.json(user)
-}
+    return NextResponse.json({ message: "Register success" })
+};
