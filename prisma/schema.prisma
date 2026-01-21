@@ -86,3 +86,8 @@ model Log {
 
   createdAt DateTime @default(now())
 }
+
+model emailToken {
+  id        String    @id @default(uuid())
+  token     String
+}
