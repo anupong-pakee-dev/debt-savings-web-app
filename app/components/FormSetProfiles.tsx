@@ -2,9 +2,13 @@
 
 import { Button, Input } from "./Components"
 
-export default function FormSetPass() {
-    return (
-        <form>
+export default function FormSetProfiles() {
+  return (
+   <form>
+            <div className="flex items-center px-4 py-4 mt-4 mb-4 border-2 rounded-2xl">
+                <label className="text-sm w-10">ชื่อ: </label>
+                <Input type="text" name="text" className="pl-2" placeholder="(ไม่บังคับ)" />
+            </div>
             <div className="flex items-center px-4 py-4 mt-4 mb-4 border-2 rounded-2xl">
                 <label className="text-sm w-20">รหัสผ่าน: </label>
                 <Input type="password" name="password" className="pl-2" placeholder="ความยาวขั้นต่ำ 6 ตัวอักษร" />
@@ -15,5 +19,5 @@ export default function FormSetPass() {
             </div>
             <Button type="submit" className="cursor-pointer text-black">เริ่มต้นใช้งาน</Button>
         </form>
-    )
+  )
 }
