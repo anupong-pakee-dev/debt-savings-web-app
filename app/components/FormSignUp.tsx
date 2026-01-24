@@ -28,6 +28,7 @@ export default function FormSignUp() {
     e.preventDefault();
     
     await axios.post(process.env.NEXT_PUBLIC_DOMAIN_URL + "/api/signup/" + language, data)
+      .then((res) => console.log(res.data))
       .catch((res) => console.error(res))
   }
 

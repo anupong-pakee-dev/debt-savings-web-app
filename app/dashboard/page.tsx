@@ -1,13 +1,34 @@
 'use client'
 
 import React from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Button, Card, CardContent } from "../components/Components";
 import { ArrowDownRight, ArrowUpRight, CreditCard, Plus, Wallet } from "lucide-react";
+
+import { Button, Card, CardContent } from "../components/Components";
 import { Chart } from "../components/Chart";
 import AddTransaction from "../components/AddTransaction.tsx";
+
 export default function page() {
     const [show, setShow] = React.useState(false);
+
+    const router = useRouter();
+
+    React.useEffect(() => {
+        const token = localStorage.getItem("access_token");
+        verifyToken(token!)
+    }, [])
+
+    const verifyToken = async (token: string) => {
+        await axios.post(process.env.NEXT_PUBLIC_DOMAIN_URL + "/api/verify/" + token)
+            .then((res) => console.log(res.data))
+            .catch((res) => {
+                console.error(res);
+                router.push("/auth/signin");
+            })
+    }
+
     const labels = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.']
     const dataMocup = {
         labels,
@@ -112,12 +133,12 @@ export default function page() {
 
             <div className="justify-items-center p-10">
                 <figure>
-                    <Chart title="เงินออม VS หนี้สิน" desc="ข้อมูลปัจจุบัน" dataset={dataMocup} optionsdata={options} />
+                    <Chart title="เงินออม VS หนี้สิน" desc="ข้อมูลปัจจุบัน" dataset={dataMocup} />
                 </figure>
             </div>
 
             <footer className="p-4 text-center bg-black/60">
-                <p>&copy; 2026 Debt & Savings. All rights reserved.</p>
+                <p>&copy; 2025 Debt & Savings. All rights reserved.</p>
             </footer>
         </div>
     )

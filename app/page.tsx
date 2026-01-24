@@ -36,33 +36,14 @@ const savingsVSdebtData = {
   ]
 }
 
-const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      labels: { color: 'white' },
-    }
-  },
-  scales: {
-    x: {
-      ticks: { color: 'white' },
-      grid: { color: 'rgba(255, 255, 255, 0.2)' }
-    },
-    y: {
-      ticks: { color: 'white' },
-      grid: { color: 'rgba(255, 255, 255, 0.2)' }
-    }
-  }
-}
-
 export default function Home() {
   return (
     <main className="min-h-screen">
       <header className="p-10 md:p-20 text-center">
         <h1 className="text-2xl font-bold">ลดหนี้ เพิ่มเงินออม</h1>
         <p>เริ่มต้นวันนี้ด้วยแผนง่ายๆ</p>
-        <Link href={"/auth/signin"}>
-          <Button className="mt-4 text-black">เริ่มเลย</Button>
+        <Link href={"/dashboard"}>
+          <Button className="mt-4 text-black cursor-pointer">เริ่มเลย</Button>
         </Link>
       </header>
 
@@ -85,7 +66,7 @@ export default function Home() {
         <h2 className="font-bold mb-6">ตัวอย่างกราฟการเงิน</h2>
 
         <figure>
-          <Chart title="รายรับ VS รายจ่าย" desc="ข้อมูลเมื่อ 6 เดือนที่ผ่านมา" dataset={savingsVSdebtData} optionsdata={options} />
+          <Chart title="รายรับ VS รายจ่าย" desc="ข้อมูลเมื่อ 6 เดือนที่ผ่านมา" dataset={savingsVSdebtData} />
           <figcaption className="mt-4 text-center">
             กราฟเปรียบเทียบรายรับและรายจ่ายในช่วง 6 เดือนที่ผ่านมา
           </figcaption>
@@ -105,7 +86,7 @@ export default function Home() {
             <label className="mr-2">ข้อความ: </label>
             <textarea className="border p-4 outline-none" placeholder="พิมพ์ข้อความ" />
           </div>
-          <Button type="submit" className="mt-4 text-black" >ส่งข้อความ</Button>
+          <Button type="submit" className="mt-4 text-black cursor-pointer" >ส่งข้อความ</Button>
         </form>
 
         <address>Gmail: mrnu.developer@gmail.com</address>
@@ -114,7 +95,7 @@ export default function Home() {
       <Warn />
 
       <footer className="p-4 text-center bg-black/60">
-        <p>&copy; 2026 Debt & Savings. All rights reserved.</p>
+        <p>&copy; 2025 Debt & Savings. All rights reserved.</p>
       </footer>
     </main>
   );

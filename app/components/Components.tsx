@@ -5,8 +5,6 @@ type CardProps = {
     className?: string;
 }
 
-
-
 export const Card = ({ children, className = "" }: CardProps) => {
     return (
         <div className={`rounded-2xl bg-white shadow-sm ${className}`}>
@@ -23,7 +21,7 @@ export const CardContent = ({ children, className = ""}: CardProps) => {
 
 export const Button = ({ children, className = "", ...props}: React.ComponentProps<"button">) => {
     return (
-        <button {...props} className={`px-4 py-2 rounded-xl font-semibold bg-white hover:bg-gray-100 shadow-lg ${className}`}>
+        <button {...props} className={`px-4 py-2 rounded-xl font-semibold bg-white hover:bg-gray-400 duration-300 shadow-lg ${className}`}>
             {children}
         </button>
     )

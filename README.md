@@ -83,4 +83,4 @@ http://localhost:3000
 
 
 ## License
-### MIT License © 2026
+### MIT License © 2025

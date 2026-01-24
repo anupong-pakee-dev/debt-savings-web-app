@@ -24,19 +24,51 @@ ChartJS.register(
 );
 
 type LineChartData = ChartData<"line">;
-type LineChartOptions = ChartOptions<"line">;
 
 export function Chart({
   title,
   desc,
   dataset,
-  optionsdata,
 }: {
   title: string;
   desc: string;
   dataset: LineChartData;
-  optionsdata: LineChartOptions;
 }) {
+  const optionsSetting = {
+    responsive: true,
+    interaction: {
+      mode: "index" as const,
+      intersect: false,
+    },
+    plugins: {
+      legend: {
+        labels: { color: 'white' },
+      }
+    },
+    tooltip: {
+      enabled: true,
+      backgroundColor: "rgba(0,0,0,0.8)",
+      titleColor: "#fff",
+      bodyColor: "#fff",
+      padding: 10,
+      cornerRadius: 8,
+      callbacks: {
+        label: function (context: any) {
+          return context.dataset.label + ": " + context.parsed.y.toLocaleString() + " บาท"
+        }
+      }
+    },
+    scales: {
+      x: {
+        ticks: { color: 'white' },
+        grid: { color: 'rgba(255, 255, 255, 0.2)' }
+      },
+      y: {
+        ticks: { color: 'white' },
+        grid: { color: 'rgba(255, 255, 255, 0.2)' }
+      }
+    }
+  }
   return (
     <Card className="relative bg-transparent! rounded-3xl overflow-hidden border shadow-xl">
       <CardContent className="relative p-8 text-left">
@@ -48,7 +80,7 @@ export function Chart({
         </div>
 
         <div className="w-70 md:w-150 xl:w-350">
-          <Line data={dataset} options={optionsdata} />
+          <Line data={dataset} options={optionsSetting} />
         </div>
       </CardContent>
     </Card>

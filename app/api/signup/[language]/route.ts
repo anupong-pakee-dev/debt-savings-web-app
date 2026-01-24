@@ -12,7 +12,7 @@ const emailSchema = z.object({
 let html_th = fs.readFileSync(process.cwd() + "/app/templates/verify_th.html", "utf8");
 let html_en = fs.readFileSync(process.cwd() + "/app/templates/verify_en.html", "utf8");
 
-export const POST = async (req: Request,  context : { params: Promise<{ language: string }> }) => {
+export const POST = async (req: Request, context : { params: Promise<{ language: string }> }) => {
     const body = await req.json();
     const { language } = await context.params;
 
@@ -22,7 +22,7 @@ export const POST = async (req: Request,  context : { params: Promise<{ language
     const user = await prisma.user.findUnique({
         where: { email: parsed.data?.email }
     });
-    if (user) return NextResponse.json({ message: "Email already exits" }, { status: 400 });
+    if (user) return NextResponse.json({ success: false, message: "Email already exits" }, { status: 400 });
     
     const token = await jwt.sign({ email: parsed.data.email }, process.env.JWT_SECRET!, { expiresIn: "30m" });
     
@@ -51,5 +51,5 @@ export const POST = async (req: Request,  context : { params: Promise<{ language
         }
     })
 
-    return NextResponse.json({ message: "Register success" });
+    return NextResponse.json({ success: true });
 };
