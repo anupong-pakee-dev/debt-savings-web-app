@@ -7,7 +7,7 @@ export default function FormSetProfiles() {
    <form>
             <div className="flex items-center px-4 py-4 mt-4 mb-4 border-2 rounded-2xl">
                 <label className="text-sm w-10">ชื่อ: </label>
-                <Input type="text" name="text" className="pl-2" placeholder="(ไม่บังคับ)" />
+                <Input type="text" name="text" className="pl-2" placeholder="กรอกชื่อของคุณ" />
             </div>
             <div className="flex items-center px-4 py-4 mt-4 mb-4 border-2 rounded-2xl">
                 <label className="text-sm w-20">รหัสผ่าน: </label>

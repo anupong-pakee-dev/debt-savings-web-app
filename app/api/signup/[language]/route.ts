@@ -47,7 +47,9 @@ export const POST = async (req: Request, context : { params: Promise<{ language:
 
     await prisma.emailToken.create({
         data: {
+            email: parsed.data.email,
             token,
+            expiresAt: new Date(Date.now() + 1000 * 60 * 30)
         }
     })
 
