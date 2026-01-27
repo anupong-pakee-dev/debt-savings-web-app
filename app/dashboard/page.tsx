@@ -21,7 +21,7 @@ export default function page() {
     }, [])
 
     const verifyToken = async (token: string) => {
-        await axios.post(process.env.NEXT_PUBLIC_DOMAIN_URL + "/api/verify/" + token)
+        await axios.get(process.env.NEXT_PUBLIC_DOMAIN_URL + "/api/verify")
             .then((res) => console.log(res.data))
             .catch((res) => {
                 console.error(res);

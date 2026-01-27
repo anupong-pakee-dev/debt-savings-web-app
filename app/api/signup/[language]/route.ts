@@ -20,14 +20,14 @@ export const POST = async (req: Request, context : { params: Promise<{ language:
     if (!parsed.success) return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
 
     const user = await prisma.user.findUnique({
-        where: { email: parsed.data?.email }
+        where: { email: parsed.data.email }
     });
     if (user) return NextResponse.json({ success: false, message: "Email already exits" }, { status: 400 });
     
     const token = await jwt.sign({ email: parsed.data.email }, process.env.JWT_SECRET!, { expiresIn: "30m" });
     
-    html_th = html_th.replaceAll("APP_NAME", "Debt & Savings").replace("LOGO_URL", process.env.LOGO_URL!).replace("{{VERIFY_URL}}", `${process.env.VERIFY_URL}/auth/profiles?token=${token}`);
-    html_en = html_en.replaceAll("APP_NAME", "Debt & Savings").replace("LOGO_URL", process.env.LOGO_URL!).replace("{{VERIFY_URL}}", `${process.env.VERIFY_URL}/auth/profiles?token=${token}`);
+    html_th = html_th.replaceAll("APP_NAME", "Debt & Savings").replace("LOGO_URL", process.env.LOGO_URL!).replace("{{VERIFY_URL}}", `${process.env.NEXT_PUBLIC_DOMAIN_URL}/auth/profiles?email=${parsed.data.email}`);
+    html_en = html_en.replaceAll("APP_NAME", "Debt & Savings").replace("LOGO_URL", process.env.LOGO_URL!).replace("{{VERIFY_URL}}", `${process.env.NEXT_PUBLIC_DOMAIN_URL}/auth/profiles?email=${parsed.data.email}`);
     const html = language === "en" ? html_en : html_th;
 
     const transporter = nodemailer.createTransport({
@@ -53,5 +53,15 @@ export const POST = async (req: Request, context : { params: Promise<{ language:
         }
     })
 
-    return NextResponse.json({ success: true });
+    const res = NextResponse.json({ success: true })
+
+    res.cookies.set("token", token, {
+        httpOnly: true,
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+        path: "/",
+        maxAge: 60 * 30,
+    })
+
+    return res;
 };
