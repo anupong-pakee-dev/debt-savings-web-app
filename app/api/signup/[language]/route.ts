@@ -6,7 +6,7 @@ import { prisma } from "@/app/lib/prisma";
 import { NextResponse } from "next/server";
 
 const emailSchema = z.object({
-    email: z.email()
+    email: z.email("Invalid email format")
 })
 
 let html_th = fs.readFileSync(process.cwd() + "/app/templates/verify_th.html", "utf8");

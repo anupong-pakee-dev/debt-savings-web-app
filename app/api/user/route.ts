@@ -1,28 +1,26 @@
-import React from "react";
+import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/app/lib/prisma";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
 const schems = z.object({
-    email: z.email(),
+    email: z.email("Invalid email format"),
     name: z.string(),
     password: z
         .string()
-        .min(6, "รหัสผ่านต้องยาวอย่างน้อย 6 ตัว")
-        .regex(/[A-Z]/, "ต้องมีตัวพิมพ์ใหญ่อย่างน้อย 1 ตัว")
-        .regex(/[a-z]/, "ต้องมีตัวพิมพ์เล็กอย่างน้อย 1 ตัว")
-        .regex(/[0-9]/, "ต้องมีตัวเลขอย่างน้อย 1 ตัว")
+        .min(6, "The password must be at least 6 characters long.")
+        .regex(/[A-Z]/, "At least one letter must be capitalized.")
+        .regex(/[a-z]/, "At least one lowercase letter must be included.")
+        .regex(/[0-9]/, "There must be at least one number.")
 })
 
 export const POST = async (req: Request) => {
-    const body = await req.json();    
+    const body = await req.json();
 
     const parsed = schems.safeParse(body);
-    console.log(parsed.data);
-    
-    if (!parsed.success) return NextResponse.json({ success: false, error: z.treeifyError(parsed.error)}, {status: 400});
-
+    if (!parsed.success) return NextResponse.json({ success: false, error: z.treeifyError(parsed.error) }, { status: 400 });
+   
     const { email, name, password } = parsed.data;
 
     const existing = await prisma.user.findUnique({
@@ -40,7 +38,13 @@ export const POST = async (req: Request) => {
         }
     })
 
+    const token = jwt.sign(
+        { email },
+        process.env.JWT_SECRET!,
+        { expiresIn: "60m" })
+
     const res = NextResponse.json({ success: true })
+    res.cookies.set("token", token)
 
     return res
 }

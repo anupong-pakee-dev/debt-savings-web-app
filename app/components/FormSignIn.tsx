@@ -8,13 +8,13 @@ import { useRouter } from "next/navigation"
 import { Button, Input } from "./Components"
 
 const schems = z.object({
-    email: z.email("อีเมลไม่ถูกต้อง"),
+    email: z.email("Invalid email format"),
     password: z
         .string()
-        .min(6, "รหัสผ่านต้องยาวอย่างน้อย 6 ตัว")
-        .regex(/[A-Z]/, "ต้องมีตัวพิมพ์ใหญ่อย่างน้อย 1 ตัว")
-        .regex(/[a-z]/, "ต้องมีตัวพิมพ์เล็กอย่างน้อย 1 ตัว")
-        .regex(/[0-9]/, "ต้องมีตัวเลขอย่างน้อย 1 ตัว")
+        .min(6, "The password must be at least 6 characters long.")
+        .regex(/[A-Z]/, "At least one letter must be capitalized.")
+        .regex(/[a-z]/, "At least one lowercase letter must be included.")
+        .regex(/[0-9]/, "There must be at least one number.")
 })
 
 export default function FormSignIn() {
@@ -26,11 +26,10 @@ export default function FormSignIn() {
     const router = useRouter();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setData(prev => ({
-            ...prev,
-            [name]: value
-        }))
+        setData({
+            ...data,
+            [e.target.name]: e.target.value
+        })
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -42,7 +41,7 @@ export default function FormSignIn() {
             return;
         }
 
-        await axios.post(process.env.NEXT_PUBLIC_DOMAIN_URL + "/api/signin", parsed.data)
+        await axios.post(process.env.NEXT_PUBLIC_DOMAIN_URL + "/api/signin/" + "en", parsed.data)
             .then((res) => {
                 console.log(res.data);
                 router.push("/dashboard")
