@@ -4,7 +4,7 @@ import React from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { ArrowDownRight, ArrowUpRight, CreditCard, Plus, Wallet } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, ArrowLeft, CreditCard, Plus, Wallet, Settings, LogOut } from "lucide-react";
 
 import { Button, Card, CardContent } from "../components/Components";
 import { Chart } from "../components/Chart";
@@ -12,15 +12,15 @@ import AddTransaction from "../components/AddTransaction.tsx";
 
 export default function page() {
     const [show, setShow] = React.useState(false);
+    const [settingActive, setSettingActive] = React.useState(false);
 
     const router = useRouter();
 
     React.useEffect(() => {
-        const token = localStorage.getItem("access_token");
-        verifyToken(token!)
+        verifyToken()
     }, [])
 
-    const verifyToken = async (token: string) => {
+    const verifyToken = async () => {
         await axios.get(process.env.NEXT_PUBLIC_DOMAIN_URL + "/api/verify")
             .then((res) => console.log(res.data))
             .catch((res) => {
@@ -57,24 +57,6 @@ export default function page() {
 
     }
 
-    const options = {
-        responsive: true,
-        plugins: {
-            legend: {
-                labels: { color: 'white' },
-            }
-        },
-        scales: {
-            x: {
-                ticks: { color: 'white' },
-                grid: { color: 'rgba(255, 255, 255, 0.2)' }
-            },
-            y: {
-                ticks: { color: 'white' },
-                grid: { color: 'rgba(255, 255, 255, 0.2)' }
-            }
-        }
-    }
     return (
         <div className="min-h-screen">
             <motion.div
@@ -85,8 +67,16 @@ export default function page() {
                     <h1 className="text-2xl font-semibold">แดชบอร์ด</h1>
                     <p>หน้าแดชบอร์ดของคุณ</p>
                 </div>
-                <Button className={`${show ? 'hidden' : 'block'} flex items-center text-black cursor-pointer`} disabled onClick={() => setShow(!show)}><Plus /> เพิ่มรายการ</Button>
+                <div className="flex items-center">
+                    <Button className={`${show ? 'hidden' : 'block'} ${settingActive ? 'hidden' : 'block'} flex items-center text-black cursor-pointer`} onClick={() => setShow(!show)}><Plus /> เพิ่มรายการ</Button>
+                    <Settings className="ml-4 cursor-pointer hover:text-gray-400 duration-300" onClick={() => setSettingActive(!settingActive)} />
+                </div>
             </motion.div>
+            <div className={`${settingActive ? 'flex' : 'hidden'} absolute justify-center items-center min-w-screen min-h-screen backdrop-blur-sm z-2`}>
+                <Button className="flex items-center mr-4 text-black cursor-pointer" onClick={() => setSettingActive(!settingActive)}><ArrowLeft /> ย้อนกลับ</Button>
+                {/* <Button className="flex items-center mr-4 text-black cursor-pointer"><Settings /> การตั้งค่า</Button> */}
+                <Button className="flex items-center text-black cursor-pointer"><LogOut /> ออกจากระบบ</Button>
+            </div>
 
             <AddTransaction showOption={show} />
 

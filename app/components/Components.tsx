@@ -5,6 +5,8 @@ type CardProps = {
     className?: string;
 }
 
+type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement>;
+
 export const Card = ({ children, className = "" }: CardProps) => {
     return (
         <div className={`rounded-2xl bg-white shadow-sm ${className}`}>
@@ -33,8 +35,8 @@ export const Input = ({className = "", ...props}) => {
     )
 }
 
-export const Select = ({ children, ...props}: { children: React.ReactNode }) => {
+export const Select = ({ children, ...props}: SelectProps) => {
     return (
-        <select className="w-full rounded-xl border px-4 py-2 text-sm outline-none">{children}</select>
+        <select {...props} className="w-full rounded-xl border px-4 py-2 text-sm outline-none">{children}</select>
     )
 }

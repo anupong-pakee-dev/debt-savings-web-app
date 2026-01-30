@@ -42,8 +42,9 @@ model Session {
   id        String   @id @default(uuid())
   token     String   @unique
   userId    String
+  revoked   Boolean @default(false)
+  
   user      User     @relation(fields: [userId], references: [id])
-  expiresAt DateTime
 
   createdAt DateTime @default(now())
 }
