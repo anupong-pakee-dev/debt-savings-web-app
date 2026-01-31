@@ -52,8 +52,8 @@ export default function AddTransaction({ showOption, }: { showOption: boolean })
                             <div className="mb-4">
                                 <label className="font-semibold">ประเภท</label>
                                 <Select name="type" required onChange={handleChange}>
-                                    <option value="income">รายรับ</option>
-                                    <option value="expense">รายจ่าย</option>
+                                    <option value="INCOME">รายรับ</option>
+                                    <option value="EXPENSE">รายจ่าย</option>
                                 </Select>
                             </div>
 

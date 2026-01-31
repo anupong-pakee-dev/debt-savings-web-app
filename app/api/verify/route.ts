@@ -7,9 +7,9 @@ export const GET = async () => {
     const token = cookieStore.get("token")?.value;
     
     try {
-        const decoded = jwt.verify(token!, process.env.JWT_SECRET!);
+        jwt.verify(token!, process.env.JWT_SECRET!);        
 
-        return NextResponse.json({success: true, decoded})
+        return NextResponse.json({success: true})
     } catch (error: any) {
         if (error.name === "TokenExpiredError") {
             return NextResponse.json({ success: false, reason: "expired" }, {status: 401})

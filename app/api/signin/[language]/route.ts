@@ -19,17 +19,19 @@ export const POST = async (req: Request) => {
 
     const parsed = schema.safeParse(body);
     if (!parsed.success) return NextResponse.json(z.treeifyError(parsed.error), {status: 400});
+    
+    const { email, password } = parsed.data;
 
     const user = await prisma.user.findUnique({
-        where: { email: parsed.data.email }
+        where: { email }
     })
     if (!user) return NextResponse.json({ success: false, message: "Email not found" }, {status: 401});    
 
-    const compare = await bcrypt.compare(parsed.data.password, user.password!);
+    const compare = await bcrypt.compare(password, user.password!);
     if (!compare) return NextResponse.json({success: false, message: "Password incorrect"}, {status: 401});
 
     const token = jwt.sign(
-        {email: parsed.data.email},
+        {id: user.id, email},
         process.env.JWT_SECRET!,
         { expiresIn: "60m" }
     )

@@ -30,16 +30,24 @@ export const POST = async (req: Request) => {
 
     const hashed = await bcrypt.hash(password, 10);
 
-    await prisma.user.create({
+    const user = await prisma.user.create({
         data: {
             email,
             name,
             password: hashed
         }
     })
+    await prisma.category.createMany({
+        data: [
+            { userId: user.id, type: "INCOME", name: "Salary" },
+            { userId: user.id, type: "EXPENSE", name: "Food" },
+            { userId: user.id, type: "EXPENSE", name: "Rent" },
+            { userId: user.id, type: "EXPENSE", name: "Credit" },
+        ]
+    })
 
     const token = jwt.sign(
-        { email },
+        { id: user.id, email },
         process.env.JWT_SECRET!,
         { expiresIn: "60m" })
 
