@@ -18,6 +18,7 @@ export default function page() {
 
     React.useEffect(() => {
         verifyToken()
+
     }, [])
 
     const verifyToken = async () => {

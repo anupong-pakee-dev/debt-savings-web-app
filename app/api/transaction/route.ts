@@ -5,10 +5,10 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 
 const schems = z.object({
-    categoryId: z.string(),
+    category: z.string(),
     amount: z.int32(),
     note: z.string(),
-    date: z.date()
+    date: z.coerce.date()
 })
 
 export const POST = async (req: Request) => {
@@ -21,15 +21,17 @@ export const POST = async (req: Request) => {
     const parsed = schems.safeParse(body);
     if (!parsed.success) return NextResponse.json({ success: false, error: z.treeifyError(parsed.error) }, { status: 400 });
 
-    const { amount, note, date, categoryId } = parsed.data;
+    const { amount, note, date, category } = parsed.data;
 
-    const transaction = await prisma.transaction.create({
+    await prisma.transaction.create({
         data: {
             amount,
             note,
             date,
-            categoryId,
+            categoryId: category,
             userId: decoded.id,
         }
     })
+
+    return NextResponse.json({ success: true })
 }
