@@ -11,11 +11,22 @@ const schems = z.object({
     date: z.coerce.date()
 })
 
+export const GET = async () => {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
+    const decoded = jwt.verify(token!, process.env.JWT_SECRET!) as JwtPayload & { id: string }
+
+    const transactions = await prisma.transaction.findMany({
+        where: { userId: decoded.id },
+    })
+
+    return NextResponse.json({ success: true, data: transactions })
+}
+
 export const POST = async (req: Request) => {
     const body = await req.json();
     const cookieStore = await cookies();
     const token = cookieStore.get("token")?.value;
-
     const decoded = jwt.verify(token!, process.env.JWT_SECRET!) as JwtPayload & { id: string }
 
     const parsed = schems.safeParse(body);

@@ -38,7 +38,7 @@ export default function FormSignUp() {
       return;
     }
 
-    await axios.post(process.env.NEXT_PUBLIC_DOMAIN_URL + "/api/signup/" + language, parsed.data)
+    await axios.post(process.env.NEXT_PUBLIC_DOMAIN_URL + `/api/signup?language=${language}`, parsed.data)
       .then((res) => console.log(res.data))
       .catch((res) => console.error(res))
   }

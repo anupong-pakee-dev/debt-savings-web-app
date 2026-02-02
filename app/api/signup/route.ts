@@ -12,9 +12,11 @@ const emailSchema = z.object({
 let html_th = fs.readFileSync(process.cwd() + "/app/templates/verify_th.html", "utf8");
 let html_en = fs.readFileSync(process.cwd() + "/app/templates/verify_en.html", "utf8");
 
-export const POST = async (req: Request, context : { params: Promise<{ language: string }> }) => {
+export const POST = async (req: Request) => {
     const body = await req.json();
-    const { language } = await context.params;
+    const { searchParams } = new URL(req.url);
+    const languageParams = searchParams.get("language");
+    if (!languageParams) return NextResponse.json({success: false}, { status: 400 });
 
     const parsed = emailSchema.safeParse(body);
     if (!parsed.success) return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
@@ -28,7 +30,7 @@ export const POST = async (req: Request, context : { params: Promise<{ language:
     
     html_th = html_th.replaceAll("APP_NAME", "Debt & Savings").replace("LOGO_URL", process.env.LOGO_URL!).replace("{{VERIFY_URL}}", `${process.env.NEXT_PUBLIC_DOMAIN_URL}/auth/profiles?email=${parsed.data.email}`);
     html_en = html_en.replaceAll("APP_NAME", "Debt & Savings").replace("LOGO_URL", process.env.LOGO_URL!).replace("{{VERIFY_URL}}", `${process.env.NEXT_PUBLIC_DOMAIN_URL}/auth/profiles?email=${parsed.data.email}`);
-    const html = language === "en" ? html_en : html_th;
+    const html = languageParams === "en" ? html_en : html_th;
 
     const transporter = nodemailer.createTransport({
         service: "gmail",
@@ -41,7 +43,7 @@ export const POST = async (req: Request, context : { params: Promise<{ language:
     await transporter.sendMail({
         from: `Debt & Savings Web App <no-reply@${process.env.DOMAIN}>`,
         to: parsed.data.email,
-        subject: language === "en" ? "Verify your email" : "ยืนยันอีเมลของคุณ",
+        subject: languageParams === "en" ? "Verify your email" : "ยืนยันอีเมลของคุณ",
         html
     })
 

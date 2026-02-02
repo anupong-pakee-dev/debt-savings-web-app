@@ -4,7 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, X } from "lucide-react";
 import { Button, Card, CardContent, Input, Select } from "./Components";
-import { createTransaction, getCategory } from "../controller/api";
+import { createCategory, createTransaction, getCategory } from "../controller/api";
 
 const today = new Date().toISOString().split("T")[0];
 
@@ -25,7 +25,7 @@ export default function AddTransaction({ showOption, }: { showOption: boolean })
     const [show, setShow] = React.useState(false);
     const [showOptionState, setShowOptionState] = React.useState(showOption);
     const [category, setCategory] = React.useState<Category[]>([]);
-    const [type, setType] = React.useState("");
+
 
     React.useEffect(() => {
         setShow(data.category === "other");
@@ -41,9 +41,26 @@ export default function AddTransaction({ showOption, }: { showOption: boolean })
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
+        let categoryId = data.category;
 
+        if (data.category === "other") {
+            const payload = {
+                type: data.type,
+                name: data.newCategory
+            }
+           await createCategory(payload)
+            .then((res) => {
+                categoryId = res.data.data.id;
+            })
+            .catch((res) => console.error(res))
+        }
         
-        await createTransaction(data)
+        const payloadData = {
+            ...data,
+            category: categoryId
+        }
+        
+        await createTransaction(payloadData)
             .then((res) => console.log(res.data))
             .catch((res) => console.error(res))
     }
@@ -64,7 +81,7 @@ export default function AddTransaction({ showOption, }: { showOption: boolean })
 
     return (
         <div className={`${showOption ? 'block' : 'hidden'} p-8`}>
-            <Button className="flex py-4 text-black cursor-pointer" onClick={() => { setShowOptionState(false); }}>
+            <Button className="flex py-4 text-black cursor-pointer" onClick={() => { setShowOptionState(false); window.location.reload() }}>
                 <ArrowLeft />
                 <h1>เพิ่มรายการ</h1>
             </Button>

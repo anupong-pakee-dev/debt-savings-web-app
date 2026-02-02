@@ -9,29 +9,46 @@ import { ArrowDownRight, ArrowUpRight, ArrowLeft, CreditCard, Plus, Wallet, Sett
 import { Button, Card, CardContent } from "../components/Components";
 import { Chart } from "../components/Chart";
 import AddTransaction from "../components/AddTransaction.tsx";
+import Loading from "../components/Loading";
+import { getTransaction } from "../controller/api";
 
 export default function page() {
+    const [data, setData] = React.useState([]);
     const [show, setShow] = React.useState(false);
     const [settingActive, setSettingActive] = React.useState(false);
+    const [loading, setLoading] = React.useState(false);
 
     const router = useRouter();
 
     React.useEffect(() => {
-        verifyToken()
-
+        setLoading(true);
+        verifyToken();
+        getTransactions();
     }, [])
 
     const verifyToken = async () => {
         await axios.get(process.env.NEXT_PUBLIC_DOMAIN_URL + "/api/verify")
-            .then((res) => console.log(res.data))
+            .then((res) => {
+                console.log(res.data);
+                setLoading(false);
+            })
             .catch((res) => {
                 console.error(res);
                 router.push("/auth/signin");
             })
     }
 
-    const labels = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.']
-    const dataMocup = {
+    const getTransactions = async () => {
+        await getTransaction()
+            .then((res) => {
+                setData(res.data.data);
+                console.log(res.data)
+            })
+            .catch((res) => console.error(res))
+    }
+
+    const labels = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+    const graphData = {
         labels,
         datasets: [
             {
@@ -60,6 +77,7 @@ export default function page() {
 
     return (
         <div className="min-h-screen">
+            <Loading isActive={loading} />
             <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -124,7 +142,7 @@ export default function page() {
 
             <div className="justify-items-center p-10">
                 <figure>
-                    <Chart title="เงินออม VS หนี้สิน" desc="ข้อมูลปัจจุบัน" dataset={dataMocup} />
+                    <Chart title="เงินออม VS หนี้สิน" desc="ข้อมูลปัจจุบัน" dataset={graphData} />
                 </figure>
             </div>
 
