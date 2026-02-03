@@ -41,7 +41,7 @@ export default function FormSignIn() {
             return;
         }
 
-        await axios.post(process.env.NEXT_PUBLIC_DOMAIN_URL + "/api/signin/" + "en", parsed.data)
+        await axios.post(process.env.NEXT_PUBLIC_DOMAIN_URL + "/api/signin", parsed.data)
             .then((res) => {
                 console.log(res.data);
                 router.push("/dashboard")

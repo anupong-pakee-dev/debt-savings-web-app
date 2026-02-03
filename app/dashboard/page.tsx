@@ -12,16 +12,25 @@ import AddTransaction from "../components/AddTransaction.tsx";
 import Loading from "../components/Loading";
 import { getTransaction } from "../controller/api";
 
+type Transaction = {
+    id: string,
+    amount: number,
+    date: string,
+    note?: string,
+    category: {
+        type: "INCOME" | "EXPENSE",
+    }
+}
+
 export default function page() {
-    const [data, setData] = React.useState([]);
+    const [data, setData] = React.useState<Transaction[]>([]);
     const [show, setShow] = React.useState(false);
     const [settingActive, setSettingActive] = React.useState(false);
-    const [loading, setLoading] = React.useState(false);
+    const [loading, setLoading] = React.useState(true);
 
     const router = useRouter();
 
     React.useEffect(() => {
-        setLoading(true);
         verifyToken();
         getTransactions();
     }, [])
@@ -42,18 +51,29 @@ export default function page() {
         await getTransaction()
             .then((res) => {
                 setData(res.data.data);
-                console.log(res.data)
+                console.log(res.data.data)
             })
             .catch((res) => console.error(res))
     }
 
-    const labels = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+    const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const monthlyIncome = new Array(12).fill(0);
+    const monthlyExpense = new Array(12).fill(0);
+
+    data.forEach((t) => {
+        const month = new Date(t.date).getMonth();
+        const type = t.category.type;
+
+        if (type === "INCOME") { monthlyIncome[month] += t.amount; }
+        if (type === "EXPENSE") { monthlyExpense[month] += t.amount; }
+    })
+
     const graphData = {
         labels,
         datasets: [
             {
                 label: "เงินออม",
-                data: [12000, 18000, 22000, 40000, 45000, 52000],
+                data: monthlyIncome,
                 borderColor: "rgba(34, 197, 94, 1)",
                 backgroundColor: "rgba(34, 197, 94, 1)",
                 borderWidth: 1,
@@ -63,7 +83,7 @@ export default function page() {
             },
             {
                 label: "รายจ่าย",
-                data: [1200000, 180000, 140000, 90000, 50000, 30000],
+                data: monthlyExpense,
                 borderColor: "rgba(239, 68, 68, 1)",
                 backgroundColor: "rgba(239, 68, 68, 1)",
                 borderWidth: 1,

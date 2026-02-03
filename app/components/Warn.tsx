@@ -17,7 +17,7 @@ export default function Warn() {
           <p>ขณะนี้เว็บไซต์เวอร์ชันนี้เป็น <strong>Preview Version</strong> เราเปิดให้ชมหน้าตาและประสบการณ์การใช้งานก่อน ระบบหลังบ้านและบางฟังก์ชันยังอยู่ระหว่างการพัฒนาจะแล้วเสร็จภายในเดือน <strong>กุมภาพันธ์ 2569</strong> ขอบคุณที่ช่วยทดลองใช้งาน</p>
         </div>
         <div className='text-end'>
-          <Button className='mt-4 text-black' onClick={() => setActive(!active)}>ปิด</Button>
+          <Button className='mt-4 text-black cursor-pointer' onClick={() => setActive(!active)}>ปิด</Button>
         </div>
       </div>
     </div>

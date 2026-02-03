@@ -18,6 +18,15 @@ export const GET = async () => {
 
     const transactions = await prisma.transaction.findMany({
         where: { userId: decoded.id },
+        include: {
+            category: {
+                select: {
+                    id: true,
+                    type: true,
+                    name: true,
+                }
+            }
+        }
     })
 
     return NextResponse.json({ success: true, data: transactions })
