@@ -13,7 +13,12 @@ type Category = {
     name: string
 }
 
-export default function AddTransaction({ showOption, }: { showOption: boolean }) {
+type Props = {
+    showOption: boolean,
+    onSuccess: () => void
+}
+
+export default function AddTransaction({ showOption, onSuccess }: Props) {
     const [data, setData] = React.useState({
         type: "",
         amount: 0,
@@ -61,7 +66,10 @@ export default function AddTransaction({ showOption, }: { showOption: boolean })
         }
         
         await createTransaction(payloadData)
-            .then((res) => console.log(res.data))
+            .then((res) => {
+                console.log(res.data)
+                onSuccess();
+            })
             .catch((res) => console.error(res))
     }
 

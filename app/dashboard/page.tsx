@@ -35,6 +35,29 @@ export default function page() {
         getTransactions();
     }, [])
 
+    const { totalIncome, totalExpense, totalBalance, monthlyIncome, monthlyExpense } = React.useMemo(() => {
+        const income = new Array(12).fill(0);
+        const expense = new Array(12).fill(0);
+
+        data.forEach((t) => {
+            const month = new Date(t.date).getMonth();
+            if (t.category.type === "INCOME") income[month] += t.amount;
+            if (t.category.type === "EXPENSE") expense[month] += t.amount;
+        });
+
+        const ti = income.reduce((a, b) => a + b, 0);
+        const te = expense.reduce((a, b) => a + b, 0);
+
+        return {
+            monthlyIncome: income,
+            monthlyExpense: expense,
+            totalIncome: ti,
+            totalExpense: te,
+            totalBalance: ti - te
+        };
+    }, [data]);
+
+
     const verifyToken = async () => {
         await axios.get(process.env.NEXT_PUBLIC_DOMAIN_URL + "/api/verify")
             .then((res) => {
@@ -51,28 +74,18 @@ export default function page() {
         await getTransaction()
             .then((res) => {
                 setData(res.data.data);
-                console.log(res.data.data)
+                // console.log(res.data.data)
             })
             .catch((res) => console.error(res))
     }
 
     const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const monthlyIncome = new Array(12).fill(0);
-    const monthlyExpense = new Array(12).fill(0);
-
-    data.forEach((t) => {
-        const month = new Date(t.date).getMonth();
-        const type = t.category.type;
-
-        if (type === "INCOME") { monthlyIncome[month] += t.amount; }
-        if (type === "EXPENSE") { monthlyExpense[month] += t.amount; }
-    })
 
     const graphData = {
         labels,
         datasets: [
             {
-                label: "เงินออม",
+                label: "รายรับ",
                 data: monthlyIncome,
                 borderColor: "rgba(34, 197, 94, 1)",
                 backgroundColor: "rgba(34, 197, 94, 1)",
@@ -117,7 +130,7 @@ export default function page() {
                 <Button className="flex items-center text-black cursor-pointer"><LogOut /> ออกจากระบบ</Button>
             </div>
 
-            <AddTransaction showOption={show} />
+            <AddTransaction showOption={show} onSuccess={() => {getTransactions()}} />
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-3 mb-10 p-8 text-black">
                 <Card className="bg-white border shadow-xl">
@@ -129,7 +142,7 @@ export default function page() {
                             </span>
                         </div>
                         <h2 className="mt-4 text-sm font-bold">ยอดเงินคงเหลือ</h2>
-                        <p className="text-2xl">12,000 บาท</p>
+                        <p className="text-2xl">{totalBalance.toLocaleString()} บาท</p>
                     </CardContent>
                 </Card>
 
@@ -142,7 +155,7 @@ export default function page() {
                             </span>
                         </div>
                         <h2 className="mt-4 text-sm font-bold">หนี้สินคงเหลือ</h2>
-                        <p className="text-2xl">1,200,050 บาท</p>
+                        <p className="text-2xl">{totalExpense.toLocaleString()} บาท</p>
                     </CardContent>
                 </Card>
 
@@ -155,7 +168,7 @@ export default function page() {
                             </span>
                         </div>
                         <h2 className="mt-4 text-sm font-bold">เงินออมคงเหลือ</h2>
-                        <p className="text-2xl">12,000 บาท</p>
+                        <p className="text-2xl">{(totalBalance - totalExpense).toLocaleString()} บาท</p>
                     </CardContent>
                 </Card>
             </div>
