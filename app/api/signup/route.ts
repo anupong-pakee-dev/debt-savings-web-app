@@ -41,7 +41,7 @@ export const POST = async (req: Request) => {
     });
 
     await transporter.sendMail({
-        from: `Debt & Savings Web App <no-reply@${process.env.DOMAIN}>`,
+        from: `Debt & Savings Web App <no-reply@${process.env.NEXT_PUBLIC_DOMAIN_URL}>`,
         to: parsed.data.email,
         subject: languageParams === "en" ? "Verify your email" : "ยืนยันอีเมลของคุณ",
         html

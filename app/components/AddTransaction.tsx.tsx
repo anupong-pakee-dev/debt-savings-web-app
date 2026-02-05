@@ -31,10 +31,13 @@ export default function AddTransaction({ showOption, onSuccess }: Props) {
     const [showOptionState, setShowOptionState] = React.useState(showOption);
     const [category, setCategory] = React.useState<Category[]>([]);
 
-
     React.useEffect(() => {
         setShow(data.category === "other");
     }, [data.category])
+
+    React.useEffect(() => {
+        setShowOptionState(showOption);
+    }, [showOption])
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -88,8 +91,8 @@ export default function AddTransaction({ showOption, onSuccess }: Props) {
     }
 
     return (
-        <div className={`${showOption ? 'block' : 'hidden'} p-8`}>
-            <Button className="flex py-4 text-black cursor-pointer" onClick={() => { setShowOptionState(false); window.location.reload() }}>
+        <div className={`${showOptionState ? 'block' : 'hidden'} p-8`}>
+            <Button className="flex py-4 text-black cursor-pointer" onClick={() => { setShowOptionState(false) }}>
                 <ArrowLeft />
                 <h1>เพิ่มรายการ</h1>
             </Button>
