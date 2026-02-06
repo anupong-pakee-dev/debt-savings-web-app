@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 
 const schems = z.object({
-    email: z.email("Invalid email format"),
+    email: z.string().email("Invalid email format"),
     name: z.string(),
     password: z
         .string()

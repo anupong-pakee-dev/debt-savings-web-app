@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { NextResponse } from 'next/server';
 
 const schema = z.object({
-    email: z.email("Invalid email format"),
+    email: z.string().email("Invalid email format"),
     password: z
         .string()
         .min(6, "The password must be at least 6 characters long.")

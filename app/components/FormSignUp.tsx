@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { Button, Input } from './Components';
 
 const schems = z.object({
-  email: z.email("อีเมลไม่ถูกต้อง")
+  email: z.string().email("อีเมลไม่ถูกต้อง")
 })
 
 export default function FormSignUp() {
