@@ -4,13 +4,13 @@ import React from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { ArrowDownRight, ArrowUpRight, ArrowLeft, CreditCard, Plus, Wallet, Settings, LogOut } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, ArrowLeft, CreditCard, Plus, Wallet, Settings, LogOut, PiggyBank } from "lucide-react";
 
 import { Button, Card, CardContent } from "../components/Components";
 import { Chart } from "../components/Chart";
 import AddTransaction from "../components/AddTransaction.tsx";
 import Loading from "../components/Loading";
-import { getTransaction } from "../controller/api";
+import { getTransaction, logout } from "../controller/api";
 
 type Transaction = {
     id: string,
@@ -52,12 +52,21 @@ export default function page() {
         await getTransaction()
             .then((res) => {
                 setData(res.data.data);
-                console.log(res.data.data)
+                // console.log(res.data.data)
             })
             .catch((res) => console.error(res))
     }
 
-    const { graphData, totalBalance, totalIncome, totalExpense } = React.useMemo(() => {
+    const signout = async () => {
+        await logout()
+            .then((res) => {
+                console.log(res);
+                router.push("/auth/signin");
+            })
+            .catch((res) => console.error(res))
+    }
+
+    const { graphData, totalBalance, totalIncome, totalExpense, previousBalance, previousIncome, previousExpense, diffBalance, diffIncome, diffExpense } = React.useMemo(() => {
         const income = Array(12).fill(0);
         const expense = Array(12).fill(0);
         let totalBalance = 0;
@@ -80,10 +89,42 @@ export default function page() {
             }
         });
 
+        let previousBalance = totalBalance;
+        let previousIncome = totalIncome;
+        let previousExpense = totalExpense;
+        let diffBalance = 0;
+        let diffIncome = 0;
+        let diffExpense = 0;
+
+        if (data.length > 0) {
+            const last = data[data.length - 1];
+
+            diffBalance =
+                last.category.type === "INCOME"
+                    ? last.amount
+                    : -last.amount;
+
+            if (last.category.type === "INCOME") {
+                diffIncome = last.amount;
+            } else {
+                diffExpense = last.amount;
+            }
+
+            previousBalance = totalBalance - diffBalance;
+            previousIncome = totalIncome - diffIncome;
+            previousExpense = totalExpense - diffExpense;
+        }
+
         return {
             totalBalance,
             totalIncome,
             totalExpense,
+            previousBalance,
+            previousIncome,
+            previousExpense,
+            diffBalance,
+            diffIncome,
+            diffExpense,
             graphData: {
                 labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                 datasets: [
@@ -143,7 +184,7 @@ export default function page() {
             <div className={`${settingActive ? 'flex' : 'hidden'} absolute justify-center items-center min-w-screen min-h-screen backdrop-blur-sm z-2`}>
                 <Button className="flex items-center mr-4 text-black cursor-pointer" onClick={() => setSettingActive(!settingActive)}><ArrowLeft /> ย้อนกลับ</Button>
                 {/* <Button className="flex items-center mr-4 text-black cursor-pointer"><Settings /> การตั้งค่า</Button> */}
-                <Button className="flex items-center text-black cursor-pointer"><LogOut /> ออกจากระบบ</Button>
+                <Button className="flex items-center text-black cursor-pointer" onClick={() => signout()}><LogOut /> ออกจากระบบ</Button>
             </div>
 
             <AddTransaction showOption={show} onSuccess={() => { getTransactions() }} />
@@ -158,7 +199,24 @@ export default function page() {
                             </span> */}
                         </div>
                         <h2 className="mt-4 text-sm font-bold">ยอดเงินคงเหลือ</h2>
-                        <p className="text-2xl">{totalBalance.toLocaleString()} บาท</p>
+                        <p className="text-sm text-gray-400">
+                            {previousBalance.toLocaleString()} บาท
+                        </p>
+                        <div className="flex items-end gap-2">
+                            <p className="text-2xl font-semibold">
+                                {totalBalance.toLocaleString()} บาท
+                            </p>
+
+                            {diffBalance !== 0 && (
+                                <span
+                                    className={`flex items-center text-sm font-medium ${diffBalance > 0 ? "text-green-600" : "text-red-600"
+                                        }`}
+                                >
+                                    {diffBalance > 0 ? "+" : ""}
+                                    {diffBalance.toLocaleString()}
+                                </span>
+                            )}
+                        </div>
                     </CardContent>
                 </Card>
 
@@ -171,20 +229,54 @@ export default function page() {
                             </span> */}
                         </div>
                         <h2 className="mt-4 text-sm font-bold">หนี้สินคงเหลือ</h2>
-                        <p className="text-2xl">{totalExpense.toLocaleString()} บาท</p>
+                        <p className="text-sm text-gray-400">
+                            {previousExpense.toLocaleString()} บาท
+                        </p>
+                        <div className="flex items-end gap-2">
+                            <p className="text-2xl font-semibold">
+                                {totalExpense.toLocaleString()} บาท
+                            </p>
+
+                            {diffExpense !== 0 && (
+                                <span
+                                    className={`flex items-center text-sm font-medium ${diffExpense > 0 ? "text-red-600" : "text-green-600"
+                                        }`}
+                                >
+                                    {diffExpense > 0 ? "+" : "-"}
+                                    {diffExpense.toLocaleString()}
+                                </span>
+                            )}
+                        </div>
                     </CardContent>
                 </Card>
 
                 <Card className="bg-white border shadow-xl">
                     <CardContent>
                         <div className="flex items-center justify-between text-green-600">
-                            <Wallet className="w-6 h-6" />
+                            <PiggyBank className="w-6 h-6" />
                             {/* <span>
                                 <ArrowUpRight className="mr-1 w-4 h-4" /> +5%
                             </span> */}
                         </div>
                         <h2 className="mt-4 text-sm font-bold">เงินออมคงเหลือ</h2>
-                        <p className="text-2xl">{totalIncome.toLocaleString()} บาท</p>
+                        <p className="text-sm text-gray-400">
+                            {previousIncome.toLocaleString()} บาท
+                        </p>
+                        <div className="flex items-end gap-2">
+                            <p className="text-2xl font-semibold">
+                                {totalIncome.toLocaleString()} บาท
+                            </p>
+
+                            {diffIncome !== 0 && (
+                                <span
+                                    className={`flex items-center text-sm font-medium ${diffIncome > 0 ? "text-green-600" : "text-red-600"
+                                        }`}
+                                >
+                                    {diffIncome > 0 ? "+" : ""}
+                                    {diffIncome.toLocaleString()}
+                                </span>
+                            )}
+                        </div>
                     </CardContent>
                 </Card>
             </div>

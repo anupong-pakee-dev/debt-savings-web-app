@@ -19,3 +19,7 @@ export const createCategory = async (data: object) => {
     return await axios.post(process.env.NEXT_PUBLIC_DOMAIN_URL + "/api/category", data)
 }
 export const createLog = async (data: object) => {}
+
+export const logout = async () => {
+    return await axios.post(process.env.NEXT_PUBLIC_DOMAIN_URL + "/api/logout")
+}
